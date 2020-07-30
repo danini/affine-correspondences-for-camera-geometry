@@ -1,0 +1,3 @@
+[submodule "lib/magsac"]
+	path = lib/magsac
+	url = https://github.com/danini/magsac.git
