@@ -201,33 +201,38 @@ namespace ACExtraction
 		cv::Mat &matches_,
 		double &extraction_time_,
 		const bool order_matches_ = true,
-		const bool display_matches_ = false)
+		const bool display_matches_ = false,
+		const bool save_matches = true)
 	{
 		extraction_time_ = 0;
-		std::ifstream infile(correspondence_path_);
 
-		if (infile.is_open())
+		if (save_matches)
 		{
-			double x1, y1, x2, y2, a11, a12, a21, a22;
-			matches_.create(0, 8, CV_64F);
-			cv::Mat row(1, 8, CV_64F);
+			std::ifstream infile(correspondence_path_);
 
-			while (infile >> x1 >> y1 >> x2 >> y2 >>
-				a11 >> a12 >> a21 >> a22)
+			if (infile.is_open())
 			{
-				row.at<double>(0) = x1;
-				row.at<double>(1) = y1;
-				row.at<double>(2) = x2;
-				row.at<double>(3) = y2;
-				row.at<double>(4) = a11;
-				row.at<double>(5) = a12;
-				row.at<double>(6) = a21;
-				row.at<double>(7) = a22;
-				matches_.push_back(row);
-			}
+				double x1, y1, x2, y2, a11, a12, a21, a22;
+				matches_.create(0, 8, CV_64F);
+				cv::Mat row(1, 8, CV_64F);
 
-			infile.close();
-			return true;
+				while (infile >> x1 >> y1 >> x2 >> y2 >>
+					a11 >> a12 >> a21 >> a22)
+				{
+					row.at<double>(0) = x1;
+					row.at<double>(1) = y1;
+					row.at<double>(2) = x2;
+					row.at<double>(3) = y2;
+					row.at<double>(4) = a11;
+					row.at<double>(5) = a12;
+					row.at<double>(6) = a21;
+					row.at<double>(7) = a22;
+					matches_.push_back(row);
+				}
+
+				infile.close();
+				return true;
+			}
 		}
 
 		FeatureKeypoints fkp_left, fkp_right;
@@ -283,33 +288,31 @@ namespace ACExtraction
 			}
 
 			// Save matches
-			{
-				matches_.create(matches.size(), 8, CV_64F);
-				double *matches_data = reinterpret_cast<double *>(matches_.data);
+			matches_.create(matches.size(), 8, CV_64F);
+			double *matches_data = reinterpret_cast<double *>(matches_.data);
 
-				for (auto& match : matches) {
-					const auto&[left_p, right_p] = std::make_pair(match.point2D_idx1, match.point2D_idx2);
+			for (auto& match : matches) {
+				const auto&[left_p, right_p] = std::make_pair(match.point2D_idx1, match.point2D_idx2);
 
-					const auto& left = fkp_left[left_p];
-					const auto& right = fkp_right[right_p];
+				const auto& left = fkp_left[left_p];
+				const auto& right = fkp_right[right_p];
 
-					*(matches_data++) = left.x;
-					*(matches_data++) = left.y;
-					*(matches_data++) = right.x;
-					*(matches_data++) = right.y;
+				*(matches_data++) = left.x;
+				*(matches_data++) = left.y;
+				*(matches_data++) = right.x;
+				*(matches_data++) = right.y;
 
-					Eigen::Matrix2d A1, A2, A;
-					A1 << left.a11, left.a12,
-						left.a21, left.a22;
-					A2 << right.a11, right.a12,
-						right.a21, right.a22;
-					A = A2 * A1.inverse();
+				Eigen::Matrix2d A1, A2, A;
+				A1 << left.a11, left.a12,
+					left.a21, left.a22;
+				A2 << right.a11, right.a12,
+					right.a21, right.a22;
+				A = A2 * A1.inverse();
 
-					*(matches_data++) = A(0, 0);
-					*(matches_data++) = A(0, 1);
-					*(matches_data++) = A(1, 0);
-					*(matches_data++) = A(1, 1);
-				}
+				*(matches_data++) = A(0, 0);
+				*(matches_data++) = A(0, 1);
+				*(matches_data++) = A(1, 0);
+				*(matches_data++) = A(1, 1);
 			}
 
 			// Display matches using OpenCV
@@ -356,20 +359,22 @@ namespace ACExtraction
 			return false;
 		}
 
-		std::ofstream outfile(correspondence_path_);
+		if (save_matches) {
+			std::ofstream outfile(correspondence_path_);
 
-		if (outfile.is_open())
-		{
-			double x1, y1, x2, y2, a11, a12, a21, a22;
-			double *matches_ptr = reinterpret_cast<double *>(matches_.data);
-			for (int r = 0; r < matches_.rows; ++r)
+			if (outfile.is_open())
 			{
-				for (int c = 0; c < matches_.cols; ++c)
-					outfile << *(matches_ptr++) << " ";
-				outfile << "\n";
-			}
+				double x1, y1, x2, y2, a11, a12, a21, a22;
+				double *matches_ptr = reinterpret_cast<double *>(matches_.data);
+				for (int r = 0; r < matches_.rows; ++r)
+				{
+					for (int c = 0; c < matches_.cols; ++c)
+						outfile << *(matches_ptr++) << " ";
+					outfile << "\n";
+				}
 
-			outfile.close();
+				outfile.close();
+			}
 		}
 
 		return true;
