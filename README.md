@@ -46,7 +46,7 @@ The example for essential matrix fitting is available at: [link][example1].
 
 [example1]: <https://github.com/danini/affine-correspondences-for-camera-geometry/blob/master/examples/example_essential_matrix.ipynb>
 [example2]: <https://github.com/danini/affine-correspondences-for-camera-geometry/blob/master/examples/example_fundamental_matrix.ipynb>
-[example3]: <https://github.com/danini/affine-correspondences-for-camera-geometry/blob/master/examples/example_homography_matrix.ipynb>
+[example3]: <https://github.com/danini/affine-correspondences-for-camera-geometry/blob/master/examples/example_homography.ipynb>
 
 # Requirements
 
