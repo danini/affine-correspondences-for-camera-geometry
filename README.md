@@ -38,9 +38,9 @@ $ ./SampleProject
 
 # Jupyter Notebook example
 
-The example for homography fitting is available at: [link][example1].
+The example for homography fitting is available at: [link][example3].
  
-The example for fundamental matrix fitting is available at: [link][example1].
+The example for fundamental matrix fitting is available at: [link][example2].
 
 The example for essential matrix fitting is available at: [link][example1].
 
