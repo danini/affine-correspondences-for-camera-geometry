@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(AffineGuideline LANGUAGES CXX)
-
-# indicate if OPENMP should be enabled
-option(CREATE_SAMPLE_PROJECT "Create the Sample Project" ON)
+project(AffineGuideline LANGUAGES C CXX)
 
 # ==============================================================================
 # Check C++17 support
@@ -51,12 +48,17 @@ find_package(Eigen3 REQUIRED)
 set(EIGEN_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR})
 
 # ==============================================================================
+# VLFeat
+# ==============================================================================
+add_subdirectory(lib)
+
+# ==============================================================================
 # Includes
 # ==============================================================================
 include_directories (
 	${PROJECT_SOURCE_DIR}/include
-	${PROJECT_SOURCE_DIR}/lib/magsac/graph-cut-ransac/src/pygcransac/include
-	${PROJECT_SOURCE_DIR}/lib/magsac/include
+	${PROJECT_SOURCE_DIR}/lib/graph-cut-ransac/src/pygcransac/include
+	${PROJECT_SOURCE_DIR}/lib
 )
 
 # ==============================================================================
@@ -64,12 +66,12 @@ include_directories (
 # ==============================================================================
 # Set header files for the library
 file(GLOB_RECURSE HDRS_GraphCutRANSAC
-	"lib/magsac/graph-cut-ransac/src/pygcransac/include/*.h"
+	"lib/graph-cut-ransac/src/pygcransac/include/*.h"
 ) 
 
 # Set source files to be added to the library
 file(GLOB_RECURSE SRCS_GraphCutRANSAC 
-	"lib/magsac/graph-cut-ransac/src/pygcransac/include/*.cpp"
+	"lib/graph-cut-ransac/src/pygcransac/include/*.cpp"
 )
 
 add_library(GraphCutRANSAC STATIC
@@ -79,29 +81,8 @@ add_library(GraphCutRANSAC STATIC
 
 target_link_libraries(GraphCutRANSAC
 	${OpenCV_LIBS}
-	Eigen3::Eigen)
-
-# ==============================================================================
-# Structure: MAGSAC Library
-# ==============================================================================
-# Set header files for the library
-file(GLOB_RECURSE HDRS_MAGSAC
-	"lib/magsac/include/*.h"
-) 
-
-# Set source files to be added to the library
-file(GLOB_RECURSE SRCS_MAGSAC 
-	"lib/magsac/include/*.cpp"
+	Eigen3::Eigen
 )
-
-add_library(MAGSAC STATIC
-	${HDRS_MAGSAC}
-	${SRCS_MAGSAC}
-)
-
-target_link_libraries(MAGSAC
-	${OpenCV_LIBS}
-	Eigen3::Eigen)
 
 # ==============================================================================
 # Structure: Affine Guideline Library
@@ -127,4 +108,7 @@ add_executable(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} 
 	${OpenCV_LIBS}
 	Eigen3::Eigen
+	vlfeat
 )
+
+add_dependencies(${PROJECT_NAME} vlfeat)
