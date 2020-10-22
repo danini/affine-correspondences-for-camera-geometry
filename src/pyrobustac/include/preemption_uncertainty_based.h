@@ -362,6 +362,15 @@ namespace gcransac
 				const double &b1,
 				const double &b2,
 				const double &b3,
+				const double &f11,
+				const double &f21,
+				const double &f31,
+				const double &f12,
+				const double &f22,
+				const double &f32,
+				const double &f13,
+				const double &f23,
+				const double &f33,
 				Eigen::Matrix<double, 6, 16> &A)
 			{
 				A <<
@@ -411,6 +420,15 @@ namespace gcransac
 				const double &b1,
 				const double &b2,
 				const double &b3,
+				const double &f11,
+				const double &f21,
+				const double &f31,
+				const double &f12,
+				const double &f22,
+				const double &f32,
+				const double &f13,
+				const double &f23,
+				const double &f33,
 				Eigen::Matrix<double, 9, 9> &B)
 			{
 				const double
