@@ -6,10 +6,10 @@
 #include <opencv2/calib3d.hpp>
 #include <opencv2/features2d.hpp>
 
-#include <VlFeatExtraction/Features.cpp>
-#include <VlFeatExtraction/Extraction.cpp>
-#include <VlFeatExtraction/Matching.cpp>
-#include <VlFeatExtraction/Descriptors.cpp>
+#include <VLFeatExtraction/Features.cpp>
+#include <VLFeatExtraction/Extraction.cpp>
+#include <VLFeatExtraction/Matching.cpp>
+#include <VLFeatExtraction/Descriptors.cpp>
 
 #include <VLFeat/covdet.h>
 #include <VLFeat/sift.h>
