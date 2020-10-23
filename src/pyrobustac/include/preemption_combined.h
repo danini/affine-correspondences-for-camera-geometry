@@ -99,7 +99,8 @@ namespace gcransac
 				Score &score_)
 			{
 				bool validModel = true;
-
+                std::vector<size_t> temp_inliers;
+                Score temp_score;
 				validModel = preemption_uncertainty->verifyModel(model_,
 					estimator_,
 					threshold_,
@@ -108,8 +109,8 @@ namespace gcransac
 					points_,
 					minimalSample_,
 					sampleNumber_,
-					std::vector<size_t>(),
-					Score());
+					temp_inliers,
+                    temp_score);
 
 				if (!validModel)
 					return false;

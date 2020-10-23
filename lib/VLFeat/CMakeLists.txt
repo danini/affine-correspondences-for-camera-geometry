@@ -68,6 +68,7 @@ set(VLFEAT_SOURCE_FILES
     svmdataset.h
     vlad.c
     vlad.h)
+add_definitions("-fPIC")
 
 if(SIMD_ENABLED AND IS_X86)
     if (MSVC)

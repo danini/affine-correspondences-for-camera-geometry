@@ -14,7 +14,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-strict-aliasing")
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wno-write-strings")
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated -ansi")
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ftree-vectorize -funroll-loops")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ftree-vectorize -funroll-loops -fPIC")
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
 # ==============================================================================
@@ -35,6 +35,7 @@ if (OPENCV_FOUND)
 	set(TRGT_LNK_LBS_ADDITIONAL OpenMP::OpenMP_CXX)
 endif (OPENCV_FOUND)
 
+FIND_PACKAGE(Threads REQUIRED)
 # ==============================================================================
 # Find OpenMP
 # ==============================================================================
@@ -89,7 +90,7 @@ add_library(GraphCutRANSAC STATIC
 
 target_link_libraries(GraphCutRANSAC
 	${OpenCV_LIBS}
-	Eigen3::Eigen
+        Eigen3::Eigen ${CMAKE_THREAD_LIBS_INIT}
 )
 
 # ==============================================================================
@@ -124,7 +125,7 @@ target_link_libraries(pyrobustac PRIVATE
 	${OpenCV_LIBS} 
 	Eigen3::Eigen 
 	vlfeat
-	GraphCutRANSAC)
+        GraphCutRANSAC ${CMAKE_THREAD_LIBS_INIT})
 	
 add_library(${PROJECT_NAME} STATIC
 	${HDRS_AffineGuideline}
@@ -135,7 +136,7 @@ target_link_libraries (${PROJECT_NAME}
 	${OpenCV_LIBS}
 	Eigen3::Eigen
 	vlfeat
-	GraphCutRANSAC)
+        GraphCutRANSAC ${CMAKE_THREAD_LIBS_INIT})
 	
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/build/lib)
 
