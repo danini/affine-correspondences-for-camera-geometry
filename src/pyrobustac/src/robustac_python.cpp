@@ -118,10 +118,10 @@ int findFundamentalMat_(
 		points.at<double>(i, 1) = sourcePoints_[2 * i + 1];
 		points.at<double>(i, 2) = destinationPoints_[2 * i];
 		points.at<double>(i, 3) = destinationPoints_[2 * i + 1];
-		points.at<double>(i, 0) = affinities_[4 * i];
-		points.at<double>(i, 1) = affinities_[4 * i + 1];
-		points.at<double>(i, 2) = affinities_[4 * i + 2];
-		points.at<double>(i, 3) = affinities_[4 * i + 3];
+		points.at<double>(i, 4) = affinities_[4 * i];
+		points.at<double>(i, 5) = affinities_[4 * i + 1];
+		points.at<double>(i, 6) = affinities_[4 * i + 2];
+		points.at<double>(i, 7) = affinities_[4 * i + 3];
 	}
 
 	neighborhood::GridNeighborhoodGraph neighborhoodGraph(&points,
@@ -252,11 +252,11 @@ int findEssentialMat_(
 		points.at<double>(i, 1) = sourcePoints_[2 * i + 1];
 		points.at<double>(i, 2) = destinationPoints_[2 * i];
 		points.at<double>(i, 3) = destinationPoints_[2 * i + 1];
-		points.at<double>(i, 0) = affinities_[4 * i];
-		points.at<double>(i, 1) = affinities_[4 * i + 1];
-		points.at<double>(i, 2) = affinities_[4 * i + 2];
-		points.at<double>(i, 3) = affinities_[4 * i + 3];
-	}
+		points.at<double>(i, 4) = affinities_[4 * i];
+		points.at<double>(i, 5) = affinities_[4 * i + 1];
+		points.at<double>(i, 6) = affinities_[4 * i + 2];
+		points.at<double>(i, 7) = affinities_[4 * i + 3];
+	
 
 	neighborhood::GridNeighborhoodGraph neighborhoodGraph(&points,
 		sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
@@ -434,10 +434,10 @@ int findHomography_(
 		points.at<double>(i, 1) = sourcePoints_[2 * i + 1];
 		points.at<double>(i, 2) = destinationPoints_[2 * i];
 		points.at<double>(i, 3) = destinationPoints_[2 * i + 1];
-		points.at<double>(i, 0) = affinities_[4 * i];
-		points.at<double>(i, 1) = affinities_[4 * i + 1];
-		points.at<double>(i, 2) = affinities_[4 * i + 2];
-		points.at<double>(i, 3) = affinities_[4 * i + 3];
+		points.at<double>(i, 4) = affinities_[4 * i];
+		points.at<double>(i, 5) = affinities_[4 * i + 1];
+		points.at<double>(i, 6) = affinities_[4 * i + 2];
+		points.at<double>(i, 7) = affinities_[4 * i + 3];
 	}
 
 	neighborhood::GridNeighborhoodGraph neighborhoodGraph(&points,
