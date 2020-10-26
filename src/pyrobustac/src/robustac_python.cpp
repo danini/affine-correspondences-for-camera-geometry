@@ -256,6 +256,7 @@ int findEssentialMat_(
 		points.at<double>(i, 5) = affinities_[4 * i + 1];
 		points.at<double>(i, 6) = affinities_[4 * i + 2];
 		points.at<double>(i, 7) = affinities_[4 * i + 3];
+	}
 	
 
 	neighborhood::GridNeighborhoodGraph neighborhoodGraph(&points,
