@@ -445,7 +445,9 @@ int findHomography_(
 		{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
+		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+		0.5, 0.5, 0.5, 0.5
+	},
 		kCellNumberInNeighborhoodGraph);
 
 	// Checking if the neighborhood graph is initialized successfully.
