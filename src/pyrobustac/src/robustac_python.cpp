@@ -124,7 +124,7 @@ int findFundamentalMat_(
 		points.at<double>(i, 7) = affinities_[4 * i + 3];
 	}
 
-	neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points,
+	neighborhood::GridNeighborhoodGraph<8> neighborhoodGraph(&points,
 		{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
@@ -169,7 +169,7 @@ int findFundamentalMat_(
 		estimator);
 
 	gcransac::GCRANSAC<Estimator,
-		gcransac::neighborhood::GridNeighborhoodGraph<4>,
+		gcransac::neighborhood::GridNeighborhoodGraph<8>,
 		gcransac::MSACScoringFunction<Estimator>,
 		CombinedPreemptiveVerification> gcransac;
 	gcransac.settings.threshold = inlierOutlierThreshold_; // The inlier-outlier threshold
@@ -259,7 +259,7 @@ int findEssentialMat_(
 	}
 
 
-	neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points,
+	neighborhood::GridNeighborhoodGraph<8> neighborhoodGraph(&points,
 		{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
@@ -355,7 +355,7 @@ int findEssentialMat_(
 		estimator);
 
 	gcransac::GCRANSAC<Estimator,
-		gcransac::neighborhood::GridNeighborhoodGraph<4>,
+		gcransac::neighborhood::GridNeighborhoodGraph<8>,
 		gcransac::MSACScoringFunction<Estimator>,
 		CombinedPreemptiveVerification> gcransac;
 	gcransac.settings.threshold = kNormalizedInlierOutlierThreshold; // The inlier-outlier threshold
@@ -441,8 +441,8 @@ int findHomography_(
 		points.at<double>(i, 7) = affinities_[4 * i + 3];
 	}
 
-	neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points,
-	{	sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+	neighborhood::GridNeighborhoodGraph<8> neighborhoodGraph(&points,
+		{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
@@ -488,7 +488,7 @@ int findHomography_(
 		estimator);
 
 	gcransac::GCRANSAC<Estimator,
-		gcransac::neighborhood::GridNeighborhoodGraph<4>,
+		gcransac::neighborhood::GridNeighborhoodGraph<8>,
 		gcransac::MSACScoringFunction<Estimator>,
 		CombinedPreemptiveVerification> gcransac;
 	gcransac.settings.threshold = inlierOutlierThreshold_; // The inlier-outlier threshold
