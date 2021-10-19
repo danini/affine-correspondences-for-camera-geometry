@@ -50,11 +50,24 @@ namespace gcransac
 		{
 		public:
 			using gcransac::estimator::RobustHomographyEstimator<_MinimalSolverEngine, _NonMinimalSolverEngine>::isValidSample;
-
+			// Calculates the cross-product of two vectors
+			OLGA_INLINE void cross_product(
+				Eigen::Vector3d &result_,
+				const double *vector1_,
+				const double *vector2_,
+				const unsigned int st_) const
+			{
+				result_[0] = vector1_[st_] - vector2_[st_];
+				result_[1] = vector2_[0] - vector1_[0];
+				result_[2] = vector1_[0] * vector2_[st_] - vector1_[st_] * vector2_[0];
+			}
 			AffinityBasedHomographyEstimator() :
 				gcransac::estimator::RobustHomographyEstimator<_MinimalSolverEngine, _NonMinimalSolverEngine>()
 			{}
-
+				// The size of a minimal sample required for the estimation
+				static constexpr size_t sampleSize() {
+					return _MinimalSolverEngine::sampleSize();
+				}
 			// A function to decide if the selected sample is degenerate or not
 			// before calculating the model parameters
 			bool isValidSample(
