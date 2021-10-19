@@ -65,7 +65,7 @@ void extractACs_(
 		extractionTime, // The feature extraction time
 		true,
 		false,
-		false); 
+		false);
 
 	printf("%d correspondences are found in %f secs.\n", matches.rows, extractionTime);
 
@@ -124,11 +124,11 @@ int findFundamentalMat_(
 		points.at<double>(i, 7) = affinities_[4 * i + 3];
 	}
 
-	neighborhood::GridNeighborhoodGraph neighborhoodGraph(&points,
-		sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+	neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points,
+		{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
 		kCellNumberInNeighborhoodGraph);
 
 	// Checking if the neighborhood graph is initialized successfully.
@@ -155,7 +155,7 @@ int findFundamentalMat_(
 	// Deciding if affine correspondences are used based on the template parameter
 	constexpr size_t kUsingAffineCorrespondences = 1;
 
-	// Defining the combined (SPRT + uncertainty propagation) preemption type based on 
+	// Defining the combined (SPRT + uncertainty propagation) preemption type based on
 	// whether affine or point correspondences are used
 	typedef gcransac::preemption::CombinedPreemptiveVerfication<kUsingAffineCorrespondences,
 		Estimator, // The solver used for fitting a model to a non-minimal sample
@@ -169,7 +169,7 @@ int findFundamentalMat_(
 		estimator);
 
 	gcransac::GCRANSAC<Estimator,
-		gcransac::neighborhood::GridNeighborhoodGraph,
+		gcransac::neighborhood::GridNeighborhoodGraph<4>,
 		gcransac::MSACScoringFunction<Estimator>,
 		CombinedPreemptiveVerification> gcransac;
 	gcransac.settings.threshold = inlierOutlierThreshold_; // The inlier-outlier threshold
@@ -257,13 +257,13 @@ int findEssentialMat_(
 		points.at<double>(i, 6) = affinities_[4 * i + 2];
 		points.at<double>(i, 7) = affinities_[4 * i + 3];
 	}
-	
 
-	neighborhood::GridNeighborhoodGraph neighborhoodGraph(&points,
-		sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+
+	neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points,
+		{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
 		kCellNumberInNeighborhoodGraph);
 
 	// Checking if the neighborhood graph is initialized successfully.
@@ -341,7 +341,7 @@ int findEssentialMat_(
 	// Deciding if affine correspondences are used based on the template parameter
 	constexpr size_t kUsingAffineCorrespondences = 1;
 
-	// Defining the combined (SPRT + uncertainty propagation) preemption type based on 
+	// Defining the combined (SPRT + uncertainty propagation) preemption type based on
 	// whether affine or point correspondences are used
 	typedef gcransac::preemption::CombinedPreemptiveVerfication<kUsingAffineCorrespondences,
 		Estimator, // The solver used for fitting a model to a non-minimal sample
@@ -355,7 +355,7 @@ int findEssentialMat_(
 		estimator);
 
 	gcransac::GCRANSAC<Estimator,
-		gcransac::neighborhood::GridNeighborhoodGraph,
+		gcransac::neighborhood::GridNeighborhoodGraph<4>,
 		gcransac::MSACScoringFunction<Estimator>,
 		CombinedPreemptiveVerification> gcransac;
 	gcransac.settings.threshold = kNormalizedInlierOutlierThreshold; // The inlier-outlier threshold
@@ -414,9 +414,9 @@ int findHomography_(
 	const std::vector<double>& affinities_,
 	std::vector<bool>& inlierMask_,
 	std::vector<double>& homography_,
-	int sourceImageHeight_, 
-	int sourceImageWidth_, 
-	int destinationImageHeight_, 
+	int sourceImageHeight_,
+	int sourceImageWidth_,
+	int destinationImageHeight_,
 	int destinationImageWidth_,
 	double spatialCoherenceWeight_,
 	double inlierOutlierThreshold_,
@@ -441,11 +441,11 @@ int findHomography_(
 		points.at<double>(i, 7) = affinities_[4 * i + 3];
 	}
 
-	neighborhood::GridNeighborhoodGraph neighborhoodGraph(&points,
-		sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+	neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points,
+	{	sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
 		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
 		kCellNumberInNeighborhoodGraph);
 
 	// Checking if the neighborhood graph is initialized successfully.
@@ -467,14 +467,14 @@ int findHomography_(
 	}
 
 	// Initialize the sampler used for selecting minimal samples
-	gcransac::sampler::ProsacSampler mainSampler(&points, 
+	gcransac::sampler::ProsacSampler mainSampler(&points,
 		Estimator::sampleSize());
 	gcransac::sampler::UniformSampler localOptimizationSampler(&points);
 
 	// Deciding if affine correspondences are used based on the template parameter
 	constexpr size_t kUsingAffineCorrespondences = 1;
 
-	// Defining the combined (SPRT + uncertainty propagation) preemption type based on 
+	// Defining the combined (SPRT + uncertainty propagation) preemption type based on
 	// whether affine or point correspondences are used
 	typedef gcransac::preemption::CombinedPreemptiveVerfication<kUsingAffineCorrespondences,
 		Estimator, // The solver used for fitting a model to a non-minimal sample
@@ -488,7 +488,7 @@ int findHomography_(
 		estimator);
 
 	gcransac::GCRANSAC<Estimator,
-		gcransac::neighborhood::GridNeighborhoodGraph,
+		gcransac::neighborhood::GridNeighborhoodGraph<4>,
 		gcransac::MSACScoringFunction<Estimator>,
 		CombinedPreemptiveVerification> gcransac;
 	gcransac.settings.threshold = inlierOutlierThreshold_; // The inlier-outlier threshold
