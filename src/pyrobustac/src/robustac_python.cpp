@@ -124,13 +124,14 @@ int findFundamentalMat_(
 		points.at<double>(i, 7) = affinities_[4 * i + 3];
 	}
 
-	neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points,
-		{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
-		kCellNumberInNeighborhoodGraph);
+		cv::Mat points_for_Neighbourhood = points(cv::Rect(0, 0, 4, pointNumber)).clone();
 
+			neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points_for_Neighbourhood,
+			{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+		  	sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+		  	destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+	    	destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
+				kCellNumberInNeighborhoodGraph);
 	// Checking if the neighborhood graph is initialized successfully.
 	if (!neighborhoodGraph.isInitialized())
 	{
@@ -259,12 +260,14 @@ int findEssentialMat_(
 	}
 
 
-	neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points,
-		{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
-		kCellNumberInNeighborhoodGraph);
+		cv::Mat points_for_Neighbourhood = points(cv::Rect(0, 0, 4, pointNumber)).clone();
+
+			neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points_for_Neighbourhood,
+			{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+		  	sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+		  	destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+	    	destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
+				kCellNumberInNeighborhoodGraph);
 
 	// Checking if the neighborhood graph is initialized successfully.
 	if (!neighborhoodGraph.isInitialized())
@@ -441,12 +444,15 @@ int findHomography_(
 		points.at<double>(i, 7) = affinities_[4 * i + 3];
 	}
 
-	neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points,
-	{	sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
-		destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
-		kCellNumberInNeighborhoodGraph);
+	cv::Mat points_for_Neighbourhood = points(cv::Rect(0, 0, 4, pointNumber)).clone();
+
+		neighborhood::GridNeighborhoodGraph<4> neighborhoodGraph(&points_for_Neighbourhood,
+		{sourceImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+	  	sourceImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+	  	destinationImageWidth_ / static_cast<double>(kCellNumberInNeighborhoodGraph),
+    	destinationImageHeight_ / static_cast<double>(kCellNumberInNeighborhoodGraph)},
+			kCellNumberInNeighborhoodGraph);
+
 
 	// Checking if the neighborhood graph is initialized successfully.
 	if (!neighborhoodGraph.isInitialized())
