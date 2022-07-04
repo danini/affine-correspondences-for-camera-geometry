@@ -1,7 +1,7 @@
 # Making Affine Correspondences Work in Camera Geometry Computation
 
 The framework proposed in paper: `Barath, Daniel, et al. Making Affine Correspondences Work in Camera Geometry Computation. ECCV 2020`.
-It is available at https://arxiv.org/pdf/1906.02290
+It is available at https://www.ecva.net/papers/eccv_2020/papers_ECCV/papers/123560698.pdf
 
 # Installation C++
 
